@@ -1,8 +1,10 @@
 <template>
-  <div class="container w-100">
-    <div class="fl w-30 pa4">
-      <h3 class="f4 mt0">Events</h3>
-      <div class="pv2 bg-near-white pa3 bb" v-for="event in events" :key="event.id">
+  <div class="cf">
+    <div class="fl w-100 w-25-ns pr0 pr2-ns">
+      <h2 class="f5 mt0">Events</h2>
+      <div v-for="event in events"
+           :key="event.id"
+           class="pv2 bg-near-white pa3 bb">
         <a href="#" @click="selectEvent(event)">
           <span>{{ event.event_date }}</span>
           &mdash;
@@ -10,9 +12,8 @@
         </a>
       </div>
     </div>
-    <div class="fl w-70 pa4">
-      <h3 v-if="!event" class="f4 mt0">Select an event</h3>  
-      <Event :event="event" v-else/>
+    <div class="fl w-100 w-75-ns pl0 pl2-ns">
+      <Event :event="event" v-if="event"/>
     </div>
   </div>
 </template>
@@ -24,29 +25,32 @@ import { EVENTS } from "@/store/state/types";
 import Event from "@/components/Event";
 
 export default {
-    data() {
-        return {
-            event: null
-        }
-    },
-    components: {
-        Event
-    },
-    created() {
-        this[GET_EVENTS]();
-    },
-    computed: {
-        ...mapState([
-            EVENTS
-        ])
-    },
-    methods: {
-        ...mapActions([
-            GET_EVENTS
-        ]),
-        selectEvent(event) {
-            this.event = event;
-        }
+  data() {
+    return {
+      event: null
+    };
+  },
+  components: {
+    Event
+  },
+  created() {
+    this[GET_EVENTS]();
+  },
+  computed: {
+    ...mapState([
+      EVENTS
+    ]),
+    events() {
+      return this[EVENTS];
     }
+  },
+  methods: {
+    ...mapActions([
+      GET_EVENTS
+    ]),
+    selectEvent(event) {
+      this.event = event;
+    }
+  }
 };
 </script>
