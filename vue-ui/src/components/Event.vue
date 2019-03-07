@@ -1,5 +1,5 @@
 <template>
-  <div class="pv2 ph4">
+  <div>
     <h2 class="f5 mt0">
       {{ event.event_date }}
       &mdash;

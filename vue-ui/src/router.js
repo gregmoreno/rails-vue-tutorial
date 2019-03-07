@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Events from "@/views/Events";
+import EventsView from "@/views/EventsView";
 
 Vue.use(Router);
 
@@ -11,7 +11,17 @@ export default new Router({
     {
       path: "/events",
       name: "events",
-      component: Events
+      component: EventsView
+    },
+    {
+      path: "/events/new",
+      name: "newEvent",
+      component: EventsView
+    },
+    {
+      path: "/events/:id",
+      name: "event",
+      component: EventsView
     }
   ]
 });

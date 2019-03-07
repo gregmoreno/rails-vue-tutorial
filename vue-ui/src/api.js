@@ -12,4 +12,13 @@ export default {
   getEvents() {
     return axios.get("/events");
   },
+  createEvent(event) {
+    return axios.post("/events", event);
+  },
+  updateEvent(event) {
+    return axios.put(`/events/${event.id}`, event);
+  },
+  deleteEvent(event) {
+    return axios.delete(`/events/${event.id}`);
+  }
 };
