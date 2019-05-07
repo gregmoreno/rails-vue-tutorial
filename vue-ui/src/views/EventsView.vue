@@ -97,9 +97,9 @@ export default {
     },
     deleteEvent(event) {
       this[DELETE_EVENT](event)
-        .then(() => {
-          this.$router.push({ name: "events" });
-        })
+      .then(() => {
+        this.$router.push({ name: "events" });
+      })
     }
   }
 };

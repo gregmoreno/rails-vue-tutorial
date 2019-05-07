@@ -11,20 +11,26 @@ export default {
       })
   },
   [action_types.SAVE_EVENT]({ state, commit }, event) {
+    let method;
+
     if (event.id) {
-      return api
-        .updateEvent(event)
-        .then(response => {
-          commit(mutation_types.SET_EVENT, response.data);
-        })
+      method = api.updateEvent;
     } else {
-      return api
-        .createEvent(event)
-        .then(response => {
-          commit(mutation_types.SET_EVENT, response.data);
-        })
+      method = api.createEvent;
     }
-  },
+
+    return new Promise((resolve, reject) => {
+      method(event)
+      .then(response => {
+        commit(mutation_types.SET_EVENT, response.data);
+        resolve(response.data);
+      })
+      .catch(error => {
+        // TODO
+        // reject(error.response.data.error);
+      })
+    });
+ },
   [action_types.DELETE_EVENT]({ state, commit }, event) {
     if (event.id) {
       return api
