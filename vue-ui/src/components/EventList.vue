@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     selectEvent(event) {
-      this.$emit('eventSelected', event);
+      this.$emit("eventSelected", event);
     }
   }
 };

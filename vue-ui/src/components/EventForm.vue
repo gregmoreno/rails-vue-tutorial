@@ -3,84 +3,98 @@
     <h2 class="f5 mt0">
       New Event
     </h2>
-      <form v-on:submit.prevent="saveEvent()" className="eventForm">
+
+    <p v-if="error" class="error">
+      {{ error }}
+    </p>
+
+    <form v-on:submit.prevent="saveEvent()" className="eventForm">
+      <fieldset class="ba b--transparent ph0 mh0">
+      <input
+        type="hidden"
+        v-model="aEvent.id"/>
+      <div>
+        <label htmlFor="event_type"
+          class="f6 b db mb2">
+          <strong>Type:</strong>
+        </label>
+          <input
+            type="text"
+            id="event_type"
+            name="event_type"
+            class="input-reset ba b--black-20 pa2 mb2 db w-100" 
+            required
+            v-model="aEvent.event_type"/>
+      </div>
+      <div>
+        <label htmlFor="event_date"
+          class="f6 b db mb2">
+          <strong>Date:</strong>
+        </label>
         <input
-          type="hidden"
-          v-model="aEvent.id"
-        >
-        <div>
-          <label htmlFor="event_type">
-            <strong>Type:</strong>
-            <input
-              type="text"
-              id="event_type"
-              name="event_type"
-              v-model="aEvent.event_type"
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="event_date">
-            <strong>Date:</strong>
-            <input
-              type="text"
-              id="event_date"
-              name="event_date"
-              ref={this.dateInput}
-              autoComplete="off"
-              v-model="aEvent.event_date"
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="title">
-            <strong>Title:</strong>
-            <textarea
-              cols="30"
-              rows="10"
-              id="title"
-              name="title"
-              v-model="aEvent.title"
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="speaker">
-            <strong>Speakers:</strong>
-            <input
-              type="text"
-              id="speaker"
-              name="speaker"
-              v-model="aEvent.speaker"
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="host">
-            <strong>Hosts:</strong>
-            <input
-              type="text"
-              id="host"
-              name="host"
-              v-model="aEvent.host"
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="published">
-            <strong>Publish:</strong>
-            <input
-              type="checkbox"
-              id="published"
-              name="published"
-              v-model="aEvent.published"
-            />
-          </label>
-        </div>
-        <div className="form-actions">
-          <button type="submit">Save</button>
-        </div>
-      </form>
+          type="text"
+          id="event_date"
+          name="event_date"
+          ref={this.dateInput}
+          autoComplete="off"
+          class="input-reset ba b--black-20 pa2 mb2 db w-100" 
+          v-model="aEvent.event_date"/>
+      </div>
+      <div>
+        <label htmlFor="title"
+          class="f6 b db mb2">
+          <strong>Title:</strong>
+        </label>
+        <textarea
+          cols="30"
+          rows="10"
+          id="title"
+          name="title"
+          class="input-reset ba b--black-20 pa2 mb2 db w-100"
+          v-model="aEvent.title"/>
+      </div>
+      <div>
+        <label htmlFor="speaker"
+          class="f6 b db mb2">
+          <strong>Speakers:</strong>
+        </label>
+        <input
+          type="text"
+          id="speaker"
+          name="speaker"
+          class="input-reset ba b--black-20 pa2 mb2 db w-100"
+          v-model="aEvent.speaker"/>
+      </div>
+      <div>
+        <label htmlFor="host"
+          class="f6 b db mb2">
+          <strong>Hosts:</strong>
+        </label>
+        <input
+          type="text"
+          id="host"
+          name="host"
+          class="input-reset ba b--black-20 pa2 mb2 db w-100"
+          v-model="aEvent.host"/>
+      </div>
+      <div>
+        <label htmlFor="published"
+          class="pa0 ma0 lh-copy f6 pointer">
+          <strong>Publish:</strong>
+        </label>
+        <input
+          type="checkbox"
+          id="published"
+          name="published"
+          v-model="aEvent.published"/>
+      </div>
+      </fieldset>
+      <div className="form-actions">
+        <button class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit">
+          Save
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -93,7 +107,8 @@ export default {
     return {
       // Because you don't want changes to propagate until saved,
       // you only work on a copy.
-      aEvent: { ...this.event }
+      aEvent: { ...this.event },
+      error: ""
     }
   },
   props: {
@@ -108,9 +123,12 @@ export default {
     ]),
     saveEvent() {
       this[SAVE_EVENT](this.aEvent)
-        .then(() => {
-          this.$emit("eventSelected", this.aEvent);
-        });
+      .then((event) => {
+        this.$emit("eventSelected", event);
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
   }
 };
