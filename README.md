@@ -51,7 +51,7 @@ The tutorial was developed using the following:
 
 Start here:
 
-    http://localhost:8080
+    http://localhost:8080/events
 
 ## Architecture
 
@@ -250,7 +250,7 @@ First, initialize list of events.
 
     // src/main.js#9
     const store = initStore({
-      [state_types.EVENTS]: []
+      [states.EVENTS]: []
     });
 
 Visiting the URL `/events` loads the EventsView component.
@@ -275,11 +275,11 @@ the API to fetch the list of events.
 The state is then mutated with the response data.
 
     // src/store/actions/index.js#6
-    [action_types.GET_EVENTS]({ state, commit }) {
+    [actions.GET_EVENTS]({ state, commit }) {
       return api
         .getEvents()
         .then(response => {
-          commit(mutation_types.SET_EVENTS, response.data);
+          commit(mutations.SET_EVENTS, response.data);
         })
     }
 
@@ -292,8 +292,8 @@ The list events from the API call is then saved. Or, using
 the right technical term, the state is mutated.
 
     // src/store/mutations/index.js#8
-    [mutation_types.SET_EVENTS](state, events) {
-      state[state_types.EVENTS] = events;
+    [mutations.SET_EVENTS](state, events) {
+      state[states.EVENTS] = events;
     }
 
 The component `EventsView` listens to any changes to the list of
@@ -392,18 +392,18 @@ The `SAVE_EVENT` action is just a method that accepts an event object
 and takes care of calling the API.
 
     // src/store/actions/index.js#13
-    [action_types.SAVE_EVENT]({ state, commit }, event) {
+    [actions.SAVE_EVENT]({ state, commit }, event) {
       if (event.id) {
         return api
           .updateEvent(event)
           .then(response => {
-            commit(mutation_types.SET_EVENT, response.data);
+            commit(mutations.SET_EVENT, response.data);
           })
       } else {
         return api
           .createEvent(event)
           .then(response => {
-            commit(mutation_types.SET_EVENT, response.data);
+            commit(mutations.SET_EVENT, response.data);
           })
       }
     },
@@ -411,14 +411,14 @@ and takes care of calling the API.
 After receiving the response from the API, the list of events is updated.
 
     // src/store/mutations/index.js#8
-    [mutation_types.SET_EVENT](state, event) {
-      const i = state[state_types.EVENTS].findIndex(e => e.id == event.id);
+    [mutations.SET_EVENT](state, event) {
+      const i = state[states.EVENTS].findIndex(e => e.id == event.id);
 
       if (i >= 0) {
         // DOM will not be updated if you modify via index.
-        state[state_types.EVENTS].splice(i, 1, event);
+        state[states.EVENTS].splice(i, 1, event);
       } else {
-        state[state_types.EVENTS].push(event);
+        state[states.EVENTS].push(event);
       }
     },
 
@@ -441,22 +441,22 @@ state-view-action pattern like the other scenarios.
 
 
     // src/store/actions/index.js#28
-    [action_types.DELETE_EVENT]({ state, commit }, event) {
+    [actions.DELETE_EVENT]({ state, commit }, event) {
       if (event.id) {
         return api
           .deleteEvent(event)
           .then(response => {
-            commit(mutation_types.DELETE_EVENT, event);
+            commit(mutations.DELETE_EVENT, event);
           })
       }
     }
 
     // src/store/mutations/index.js#18
-    [mutation_types.DELETE_EVENT](state, event) {
-      const i = state[state_types.EVENTS].findIndex(e => e.id == event.id);
+    [mutations.DELETE_EVENT](state, event) {
+      const i = state[states.EVENTS].findIndex(e => e.id == event.id);
 
       if (i >= 0) {
-        state[state_types.EVENTS].splice(i, 1);
+        state[states.EVENTS].splice(i, 1);
       }
     }
 
