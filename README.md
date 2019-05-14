@@ -461,6 +461,52 @@ state-view-action pattern like the other scenarios.
     }
 
 
+### Testing
+
+I was curious how to test Vue applications so I added a simple
+unit test using Jest. If you like to use a different framework,
+the `vue-cli` create command will allow you to choose one.
+
+To help in our testing, we use a factory method to prepare the
+component to be tested.
+
+    // tests/unit/Event.spec.js
+    import { shallowMount } from "@vue/test-utils";
+    import Event from "@/components/Event";
+
+    const factory = (values = {}) => {
+      return shallowMount(Event, {
+        propsData: {
+          event: { ...values }
+        }
+      });
+    };
+
+[shallowMount](https://vue-test-utils.vuejs.org/api/#shallowmount) loads a component and stubs the child components
+which is perfect for unit testing. It also allows you to set
+the `data` or `props` attributes of the component, for example:
+
+    describe("Event", () => {
+      it("renders the event details", () => {
+        const wrapper = factory({
+          title: "event title",
+          event_type: "symposium"
+        });
+
+        expect(wrapper.find(".test-event-type").text()).toEqual("Type: symposium");
+        expect(wrapper.find(".test-title").text()).toEqual("Title: event title");
+      });
+    });
+
+To run the tests:
+
+    npm run test:unit
+
+
+Just follow the [Vue testing guide](https://vuejs.org/v2/cookbook/unit-testing-vue-components.html) if you want to dive deeper into
+Vue testing.
+
+
 ## Conclusion
 
 At this point, I hope you have a good idea how the different parts of Vue works

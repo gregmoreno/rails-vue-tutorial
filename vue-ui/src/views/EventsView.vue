@@ -2,39 +2,25 @@
   <div class="cf">
     <div class="fl w-100 w-25-ns pr0 pr2-ns">
       <h2 class="f5 mt0">
-        Events
-        &mdash;
-        <a @click="newEvent"
-          class="pointer">
+        Events &mdash;
+        <a @click="newEvent" class="pointer">
           New Event
         </a>
       </h2>
-      <EventList
-        :events="events"
-        @eventSelected="selectEvent"
-        />
-   </div>
+      <EventList :events="events" @eventSelected="selectEvent" />
+    </div>
     <div class="fl w-100 w-75-ns pl0 pl2-ns">
       <div class="pv2 ph4">
         <div v-if="showEvent">
-          <Event :event="event"
-            @eventEdit="editEvent"
-            />
+          <Event :event="event" @eventEdit="editEvent" />
           <p>
-            <a @click="editEvent(event)"
-              class="pointer">Edit
-            </a>
+            <a @click="editEvent(event)" class="pointer">Edit </a>
             &mdash;
-            <a @click="deleteEvent(event)"
-              class="pointer">Delete
-            </a>
+            <a @click="deleteEvent(event)" class="pointer">Delete </a>
           </p>
         </div>
         <div v-else-if="showEventForm">
-          <EventForm
-            :event="event"
-            @eventSelected="selectEvent"
-            />
+          <EventForm :event="event" @eventSelected="selectEvent" />
         </div>
       </div>
     </div>
@@ -57,35 +43,30 @@ export default {
   },
   data() {
     return {
-      event: null,
+      event: null
     };
   },
   created() {
     this[GET_EVENTS]();
   },
   computed: {
-    ...mapState([
-      EVENTS
-    ]),
+    ...mapState([EVENTS]),
     events() {
       return this[EVENTS];
     },
     showEvent() {
-      return (this.$route.name == "event") && (this.event !== null);
+      return this.$route.name == "event" && this.event !== null;
     },
     showEventForm() {
       // TODO use constant route_names.NEW_EVENT
-      return (this.$route.name == "newEvent") && (this.event !== null);
+      return this.$route.name == "newEvent" && this.event !== null;
     }
   },
   methods: {
-    ...mapActions([
-      GET_EVENTS,
-      DELETE_EVENT
-    ]),
+    ...mapActions([GET_EVENTS, DELETE_EVENT]),
     selectEvent(event) {
       this.event = event;
-      this.$router.push({ name: "event", params: { id: event.id } })
+      this.$router.push({ name: "event", params: { id: event.id } });
     },
     newEvent() {
       this.event = {};
@@ -96,10 +77,9 @@ export default {
       this.$router.push({ name: "newEvent" });
     },
     deleteEvent(event) {
-      this[DELETE_EVENT](event)
-      .then(() => {
+      this[DELETE_EVENT](event).then(() => {
         this.$router.push({ name: "events" });
-      })
+      });
     }
   }
 };
