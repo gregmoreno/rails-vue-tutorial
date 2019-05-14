@@ -1,16 +1,16 @@
-import * as action_types from "@/store/actions/types";
-import * as mutation_types from "@/store/mutations/types";
+import * as actions from "@/store/actions/types";
+import * as mutations from "@/store/mutations/types";
 import api from "@/api";
 
 export default {
-  [action_types.GET_EVENTS]({ state, commit }) {
+  [actions.GET_EVENTS]({ state, commit }) {
     return api
       .getEvents()
       .then(response => {
-        commit(mutation_types.SET_EVENTS, response.data);
-      })
+        commit(mutations.SET_EVENTS, response.data);
+      });
   },
-  [action_types.SAVE_EVENT]({ state, commit }, event) {
+  [actions.SAVE_EVENT]({ state, commit }, event) {
     let method;
 
     if (event.id) {
@@ -22,7 +22,7 @@ export default {
     return new Promise((resolve, reject) => {
       method(event)
       .then(response => {
-        commit(mutation_types.SET_EVENT, response.data);
+        commit(mutations.SET_EVENT, response.data);
         resolve(response.data);
       })
       .catch(error => {
@@ -31,13 +31,13 @@ export default {
       })
     });
  },
-  [action_types.DELETE_EVENT]({ state, commit }, event) {
+  [actions.DELETE_EVENT]({ state, commit }, event) {
     if (event.id) {
       return api
         .deleteEvent(event)
         .then(response => {
-          commit(mutation_types.DELETE_EVENT, event);
-        })
+          commit(mutations.DELETE_EVENT, event);
+        });
     }
   }
 };

@@ -22,3 +22,4 @@ export default {
     return axios.delete(`/events/${event.id}`);
   }
 };
+

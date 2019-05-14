@@ -1,15 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import state from '@/store/state/index';
 import mutations from "@/store/mutations/index";
 import actions from "@/store/actions/index";
 
-export default function initStore(state) {
-  Vue.use(Vuex);
+Vue.use(Vuex);
 
-  return new Vuex.Store({
-    state,
-    mutations,
-    actions
-  });
-}
+export default new Vuex.Store({
+  state,
+  actions,
+  mutations
+});

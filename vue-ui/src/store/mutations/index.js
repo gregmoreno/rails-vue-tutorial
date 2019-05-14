@@ -1,25 +1,25 @@
-import * as mutation_types from "@/store/mutations/types";
-import * as state_types from "@/store/state/types";
+import * as mutations from "@/store/mutations/types";
+import * as states from "@/store/state/types";
 
 export default {
-  [mutation_types.SET_EVENTS](state, events) {
-    state[state_types.EVENTS] = events;
+  [mutations.SET_EVENTS](state, events) {
+    state[states.EVENTS] = events;
   },
-  [mutation_types.SET_EVENT](state, event) {
-    const i = state[state_types.EVENTS].findIndex(e => e.id == event.id);
+  [mutations.SET_EVENT](state, event) {
+    const i = state[states.EVENTS].findIndex(e => e.id == event.id);
 
     if (i >= 0) {
       // DOM will not be updated if you modify via index.
-      state[state_types.EVENTS].splice(i, 1, event);
+      state[states.EVENTS].splice(i, 1, event);
     } else {
-      state[state_types.EVENTS].push(event);
+      state[states.EVENTS].push(event);
     }
   },
-  [mutation_types.DELETE_EVENT](state, event) {
-    const i = state[state_types.EVENTS].findIndex(e => e.id == event.id);
+  [mutations.DELETE_EVENT](state, event) {
+    const i = state[states.EVENTS].findIndex(e => e.id == event.id);
 
     if (i >= 0) {
-      state[state_types.EVENTS].splice(i, 1);
+      state[states.EVENTS].splice(i, 1);
     }
   }
 };
